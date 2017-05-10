@@ -6,8 +6,8 @@
  * easily looked up by type and id. It is primarily used when someone clicks
  * to add an attraction in the `options` module.
  */
-
-var attractionsModule = (function () {
+var attractionsModule;
+var buildAttractionsModule = function (hotels, restaurants, activities) {
 
   // application state
 
@@ -48,4 +48,4 @@ var attractionsModule = (function () {
 
   return publicAPI;
 
-}());
+};
