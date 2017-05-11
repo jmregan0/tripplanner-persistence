@@ -2,8 +2,8 @@
 /* global $ tripModule */
 
 
-
-var hotels = $.get('/api/hotels');
+   console.log(this.number);
+  var hotels = $.get('/api/hotels');
   var restaurants = $.get('/api/restaurants');
   var activities = $.get('/api/activities');
 

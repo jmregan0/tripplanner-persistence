@@ -44,17 +44,23 @@ var tripModule = (function () {
     $addButton.on('click', addDay);
     $removeButton.on('click', deleteCurrentDay);
   });
-
+   //********************** add NewDay here... so probably do first ajax thing here....?
   function addDay () {
-    if (this && this.blur) this.blur(); // removes focus box from buttons
-    var newDay = dayModule.create({ number: days.length + 1 }); // dayModule
-    days.push(newDay);
-    if (days.length === 1) {
+    $.post('/api/days',{number: days.length + 1}, function(data) {
+      return data.number;
+    })
+    .then((day) => {
+      if (this && this.blur) this.blur(); // removes focus box from buttons
+      var newDay = dayModule.create(day); // dayModule
+      days.push(newDay);
+      if (days.length === 1) {
       currentDay = newDay;
     }
     switchTo(newDay);
+  })
+    
   }
-
+    //------------------ Delete single day here.... 
   function deleteCurrentDay () {
     // prevent deleting last day
     if (days.length < 2 || !currentDay) return;
@@ -79,11 +85,11 @@ var tripModule = (function () {
     },
 
     switchTo: switchTo,
-
+        //***********adding any kind of attraction here... look into this more...
     addToCurrent: function (attraction) {
       currentDay.addAttraction(attraction);
     },
-
+      //----------- removing any kind of attraction here... look into this more....
     removeFromCurrent: function (attraction) {
       currentDay.removeAttraction(attraction);
     }

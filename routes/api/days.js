@@ -18,35 +18,38 @@ router.get('/:n', function(req, res, next){
   //db call here...
 })
 
-router.post('/:n', function(req, res, next){
-  res.send('posting days')
+router.post('/', function(req, res, next){
+  Day.create(req.body) 
+  .then(function(newDay) {
+  res.send(newDay)
+  })
 })
 
-router.post('/:n/restaurants', function(req, res, next){
+router.post('/:id/restaurants', function(req, res, next){
   res.send('add restaurant to selected day');
 })
 
-router.post('/:n/hotel', function(req, res, next){
-  res.send('add hotel to a selected day')
+router.post('/:id/hotel', function(req, res, next){
+  res.send(req.body)
 })
 
-router.post('/:n/activity', function(req, res, next){
+router.post('/:id/activity', function(req, res, next){
   res.send('add activity to selected day')
 })
 
-router.delete('/:n', function(req, res, next){
+router.delete('/:id', function(req, res, next){
   res.send('for deleting entire day')
 })
 
-router.delete('/:n/restaurants', function(req, res, next){
+router.delete('/:id/restaurants', function(req, res, next){
   res.send('delete restaurant to selected day')
 })
 
-router.delete('/:n/hotel', function(req, res, next){
+router.delete('/:id/hotel', function(req, res, next){
   res.send('delete hotel to a selected day')
 })
 
-router.delete('/:n/activitiy', function(req, res, next){
+router.delete('/:id/activitiy', function(req, res, next){
   res.send('delete activity to selected day')
 })
 
