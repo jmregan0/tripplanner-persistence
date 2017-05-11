@@ -10,7 +10,6 @@
  */
 
 var buildOptions = function(hotels, restaurants, activities){
-  console.log(this.number);
   // jQuery selects
   var $optionsPanel = $('#options-panel');
   var $hotelSelect = $optionsPanel.find('#hotel-choices');
