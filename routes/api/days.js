@@ -19,22 +19,54 @@ router.get('/:n', function(req, res, next){
 })
 
 router.post('/', function(req, res, next){
-  Day.create(req.body) 
+  Day.create(req.body)
   .then(function(newDay) {
   res.send(newDay)
   })
 })
 
 router.post('/:id/restaurants', function(req, res, next){
-  res.send('add restaurant to selected day');
+  var restaurantId = req.body.restaurantId;
+  var dayNumber = req.body.dayId;
+  Day.findOne({
+    where: {number: dayNumber}
+  })
+  .then(function(day){
+    day.addRestaurant(restaurantId);
+  })
+  .then(function(){
+    res.status(200);
+    res.send('updated');
+  })
+
 })
 
 router.post('/:id/hotel', function(req, res, next){
-  res.send(req.body)
+  var dayId = req.body.dayId;
+  var hotelId = req.body.hotelId;
+  Day.update({hotelId}, {where:
+    {number: dayId}
+  })
+  .then(function(){
+    res.status(200);
+    res.send('updated');
+  })
 })
 
 router.post('/:id/activity', function(req, res, next){
-  res.send('add activity to selected day')
+  var dayId = req.body.dayId;
+  var activityId = req.body.activityId;
+
+  Day.findOne({
+    where: {number: dayId}
+  })
+  .then(function(day){
+    day.addActivity(activityId);
+  })
+  .then(function(){
+    res.status(200);
+    res.send('updated')
+  })
 })
 
 router.delete('/:id', function(req, res, next){

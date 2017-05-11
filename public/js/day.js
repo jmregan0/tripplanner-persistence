@@ -74,6 +74,7 @@ var dayModule = (function () {
     $dayTitle.text('Day ' + this.number);
     // attractions UI
     function show (attraction) { attraction.show(); }
+    console.log(this);
     if (this.hotel) show(this.hotel);
     this.restaurants.forEach(show);
     this.activities.forEach(show);
@@ -90,37 +91,70 @@ var dayModule = (function () {
     this.activities.forEach(hide);
   };
 
-  // day updating
+  // >>> 3 Ajax helper functions to be passed into Day.addAttraction method below <<<
 
-    function hotelAjax (attraction,dayNumber) {
+  //  1) Hotel Ajax Function:
+
+    function hotelAjax (attraction, dayNumber, context) {
       let obj = {
-        name: attraction.name
+        hotelId: attraction.id,
+        dayId: dayNumber
       }
-    $.post('/api/days/' + dayNumber + '/hotel', obj , function(data) {
-      return data;
-    })
-    .then(function() {
-      this.hotel = attraction;
-    })
-  };
+      return $.post('/api/days/' + dayNumber + '/hotel', obj)
+      .then(() => {
+        context.hotel = attraction;
+      })
+    };
 
-  Day.prototype.addAttraction = function (attraction,dayNumber) {
+  // 2) Restaurant Ajax Function:
+
+    function restaurantAjax (attraction, dayNumber, context) {
+      let obj = {
+        restaurantId: attraction.id,
+        dayId: dayNumber
+      }
+      return $.post('/api/days/' + dayNumber + '/restaurants', obj)
+      .then(() => {
+        context.hotel = attraction;
+      })
+    };
+
+  // 3) Activity Ajax Function:
+
+    function activityAjax (attraction, dayNumber, context) {
+      let obj = {
+        activityId: attraction.id,
+        dayId: dayNumber
+      }
+      return $.post('/api/days/' + dayNumber + '/activity', obj)
+      .then(() => {
+        context.hotel = attraction;
+      })
+    };
+
+
+  Day.prototype.addAttraction = function (attraction, dayNumber) {
     // adding to the day object
+    var attractionPromise;
+
     switch (attraction.type) {
       case 'hotel':
         if (this.hotel) this.hotel.hide();
-        hotelAjax(attraction,dayNumber)
+        attractionPromise = hotelAjax(attraction, dayNumber, this);
         break;
       case 'restaurant':
+        attractionPromise = restaurantAjax(attraction, dayNumber, this);
         utilsModule.pushUnique(this.restaurants, attraction);
         break;
       case 'activity':
+        attractionPromise = activityAjax(attraction, dayNumber, this);
         utilsModule.pushUnique(this.activities, attraction);
         break;
       default: console.error('bad type:', attraction);
     }
     // activating UI
-    attraction.show();
+    attractionPromise.then(function(){attraction.show()})
+
   };
 
   Day.prototype.removeAttraction = function (attraction) {

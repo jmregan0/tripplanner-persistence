@@ -58,9 +58,9 @@ var tripModule = (function () {
     }
     switchTo(newDay);
   })
-    
+
   }
-    //------------------ Delete single day here.... 
+    //------------------ Delete single day here....
   function deleteCurrentDay () {
     // prevent deleting last day
     if (days.length < 2 || !currentDay) return;
@@ -88,7 +88,7 @@ var tripModule = (function () {
         //***********adding any kind of attraction here... look into this more...
     addToCurrent: function (attraction) {
       let dayNumber = currentDay.number;
-      currentDay.addAttraction(attraction,dayNumber);
+      currentDay.addAttraction(attraction, dayNumber);
     },
       //----------- removing any kind of attraction here... look into this more....
     removeFromCurrent: function (attraction) {
