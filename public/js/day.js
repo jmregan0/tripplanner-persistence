@@ -92,21 +92,24 @@ var dayModule = (function () {
 
   // day updating
 
-    function hotelAjax (attraction) {
-    var dayId = this.number
-    console.log(dayId);
-    $.post('/' + dayId + '/hotel', attraction.hotel , function(data) {
-      return data
+    function hotelAjax (attraction,dayNumber) {
+      let obj = {
+        name: attraction.name
+      }
+    $.post('/api/days/' + dayNumber + '/hotel', obj , function(data) {
+      return data;
+    })
+    .then(function() {
+      this.hotel = attraction;
     })
   };
 
-  Day.prototype.addAttraction = function (attraction) {
+  Day.prototype.addAttraction = function (attraction,dayNumber) {
     // adding to the day object
     switch (attraction.type) {
       case 'hotel':
         if (this.hotel) this.hotel.hide();
-        hotelAjax(attraction);
-         this.hotel = attraction;
+        hotelAjax(attraction,dayNumber)
         break;
       case 'restaurant':
         utilsModule.pushUnique(this.restaurants, attraction);

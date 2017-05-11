@@ -87,7 +87,8 @@ var tripModule = (function () {
     switchTo: switchTo,
         //***********adding any kind of attraction here... look into this more...
     addToCurrent: function (attraction) {
-      currentDay.addAttraction(attraction);
+      let dayNumber = currentDay.number;
+      currentDay.addAttraction(attraction,dayNumber);
     },
       //----------- removing any kind of attraction here... look into this more....
     removeFromCurrent: function (attraction) {
