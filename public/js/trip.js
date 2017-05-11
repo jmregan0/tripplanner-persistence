@@ -65,10 +65,11 @@ var tripModule = (function () {
     // prevent deleting last day
     if (days.length < 2 || !currentDay) return;
     // delete from database
+    var dayId = currentDay.id
+    console.dir(dayId);
     $.ajax({
       method: 'DELETE',
-      url: '/api/days/:id',
-      data: days.indexOf(currentDay)//whole day object gets sent
+      url: '/api/days/' + dayId
     })
     .then(function(){
       // remove from the collection

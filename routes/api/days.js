@@ -70,9 +70,9 @@ router.post('/:id/activity', function(req, res, next){
 })
 
 router.delete('/:id', function(req, res, next){
-  var day = req.body.number;
+  var dayId = req.params.id;
   Day.destroy({
-    where: {number: day}
+    where: {number: dayId}
   })
   .then(function(){
     res.send('day deleted');
