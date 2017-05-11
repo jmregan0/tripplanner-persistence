@@ -64,16 +64,24 @@ var tripModule = (function () {
   function deleteCurrentDay () {
     // prevent deleting last day
     if (days.length < 2 || !currentDay) return;
-    // remove from the collection
-    var index = days.indexOf(currentDay),
+    // delete from database
+    $.ajax({
+      method: 'DELETE',
+      url: '/api/days/:id',
+      data: days.indexOf(currentDay)//whole day object gets sent
+    })
+    .then(function(){
+      // remove from the collection
+      var index = days.indexOf(currentDay),
       previousDay = days.splice(index, 1)[0],
       newCurrent = days[index] || days[index - 1];
-    // fix the remaining day numbers
-    days.forEach(function (day, i) {
-      day.setNumber(i + 1);
+      // fix the remaining day numbers
+      days.forEach(function (day, i) {
+        day.setNumber(i + 1);
+      });
+      switchTo(newCurrent);
+      previousDay.hideButton()
     });
-    switchTo(newCurrent);
-    previousDay.hideButton();
   }
 
   // globally accessible module methods

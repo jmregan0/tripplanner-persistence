@@ -70,7 +70,13 @@ router.post('/:id/activity', function(req, res, next){
 })
 
 router.delete('/:id', function(req, res, next){
-  res.send('for deleting entire day')
+  var day = req.body.number;
+  Day.destroy({
+    where: {number: day}
+  })
+  .then(function(){
+    res.send('day deleted');
+  })
 })
 
 router.delete('/:id/restaurants', function(req, res, next){
